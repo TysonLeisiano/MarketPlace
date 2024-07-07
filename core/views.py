@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from item.models import Item, Category
-from.forms import SignupForm
+from .forms import SignupForm
 
 
 # Create your views here.
@@ -10,11 +10,10 @@ def index(request):
     categories = Category.objects.all()
 
     return render(request, 'core/index.html',
-    {
-        'categories': categories,
-        'items': items,
-    })
-
+                  {
+                      'categories': categories,
+                      'items': items,
+                  })
 
 
 def contact(request):
@@ -32,9 +31,26 @@ def privacy(request):
 def terms(request):
     return render(request, 'core/terms.html')
 
+
 def signup(request):
-    form = SignupForm()
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('/login/')
+        else:
+            form = SignupForm()
 
     return render(request, 'core/signup.html', {
+        'form': form
+    })
+
+
+def login(request):
+    form = SignupForm()
+
+    return render(request, 'core/login.html', {
         'form': form
     })
