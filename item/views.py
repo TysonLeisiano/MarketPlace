@@ -6,6 +6,21 @@ from item.models import Item
 
 
 # Create your views here.
+def items(request):
+    query = request.GET.get('query', '')
+    items = Item.objects.filter(is_sold=False)
+
+    for item in items:
+        if item.image and hasattr(item.image, 'url'):
+            image_url = item.image.url
+        else:
+            image_url = 'item/round_table.jpg'
+
+    return render(request, 'item/items.html', {
+        'items': items,
+        'query': query
+    })
+
 def detail(request, pk):
     item = get_object_or_404(Item, pk=pk)
     related_items = Item.objects.filter(category=item.category, is_sold=False).exclude(pk=pk)
@@ -45,6 +60,8 @@ def edit(request, pk):
             return redirect('item:detail', pk=item.id)
     else:
         form = EditItemForm(instance=item)
+
+
 
     return render(request, 'item/form.html', {
         'form': form,

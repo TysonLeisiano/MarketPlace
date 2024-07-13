@@ -2,12 +2,20 @@
 
 {% load static %}
 
-{% block title %} Welcome {% endblock %}
+{% block title %} {% endblock %}
 
 {% block content %}
-    <div class="mt-6 px-6 py-12 bg-gray-100 rounded-xl">
-        <h2 class="mb-12 text-2xl text-center">My items</h2>
-        <div class="grid grid-cols-3 gap-3">
+    <div class="pb-6 grid grid-cols-4 gap-4 bg-gray-100">
+        <div class="col-span-1">
+            <form method="get" action="{% url 'item:items' %}">
+                <input name="query" class="w-full py-4 px-6 border rounded-xl" type="text" value="{{ query }}" placeholder="Find a bike, a chair, or a car...">
+
+                <button class="mt-2 py-4 px-8 text-lg bg-teal-500 text-white rounded-xl">Search</button>
+            </form>
+        </div>
+
+        <div class="col-span-3">
+            <div class="grid grid-cols-3 gap-3">
             {% for item in items %}
                 <div>
                     <a href="{% url 'item:detail' item.id %}">
@@ -15,7 +23,7 @@
                             {% if item.image %}
                                 <img src="{{ item.image.url }}" class="rounded-b-xl">
                             {% else %}
-                                <img src="{% static 'dashboard/toy2.jpg' %}" alt="Default image">
+                                <img src="{% static 'item/round_table.jpg' %}" alt="Default image">
                             {% endif %}
                         </div>
                         <div class="p-6 bg-white rounded-b-xl">
@@ -25,6 +33,7 @@
                     </a>
                 </div>
             {% endfor %}
+        </div>
         </div>
     </div>
 {% endblock %}
