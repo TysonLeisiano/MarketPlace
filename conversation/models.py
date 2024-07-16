@@ -15,7 +15,7 @@ class Conversation(models.Model):
         verbose_name_plural = 'Conversations'
         
     def __str__(self):
-        return self.name
+        return self.item.name
 
 class ConversationMessage(models.Model):
     conversation = models.ForeignKey(Conversation, related_name='messages', on_delete=models.CASCADE) 
@@ -24,7 +24,10 @@ class ConversationMessage(models.Model):
     created_by = models.ForeignKey(User, related_name='created_messages', on_delete=models.CASCADE)
 
 
-    verbose_name_plural = 'Conversation Messages'
-        
+    class Meta:
+        verbose_name_plural = 'Conversation Messages'
+
     def __str__(self):
-        return self.name  
+        return self.content
+        
+     
